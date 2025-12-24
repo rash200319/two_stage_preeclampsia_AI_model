@@ -6,21 +6,15 @@ import numpy as np
 import joblib
 import os
 
-# ---------------------------------------------------------------------
-# Page config
-# ---------------------------------------------------------------------
+
 st.set_page_config(page_title="Doctor Lab Dashboard", layout="wide")
 st.title("Preeclampsia Lab Confirmation System ")
 
-# ---------------------------------------------------------------------
-# Load model + scaler from ../models
-# ---------------------------------------------------------------------
 @st.cache_resource
 def load_modelA():
-    # apps/app_doctor.py  ->  project_root  ->  models/
-    script_dir = os.path.dirname(os.path.abspath(__file__))   # .../app
-    project_root = os.path.dirname(script_dir)                # .../
-    models_dir = os.path.join(project_root, "models")         # .../models
+    script_dir = os.path.dirname(os.path.abspath(__file__))   
+    project_root = os.path.dirname(script_dir)                
+    models_dir = os.path.join(project_root, "models")         
 
     model_path = os.path.join(models_dir, "preeclampsia_model.pkl")
     scaler_path = os.path.join(models_dir, "scaler.pkl")
@@ -49,9 +43,7 @@ def load_modelA():
 
 modelA, scalerA, feature_order = load_modelA()
 
-# ---------------------------------------------------------------------
 # Doctor input UI
-# ---------------------------------------------------------------------
 col1, col2 = st.columns(2)
 
 with col1:
@@ -87,9 +79,7 @@ with col2:
     fam_htn = st.selectbox("Family History of HTN", [0, 1])
     sp_art = st.selectbox("Assisted Reproduction (1 = Yes)", [0, 1])
 
-# ---------------------------------------------------------------------
-# Prediction
-# ---------------------------------------------------------------------
+# Predict button
 if st.button("Confirm Lab Risk", type="primary"):
     # Build dict using EXACT 21 features (same names/order as training) [file:1]
     row = {
@@ -116,12 +106,9 @@ if st.button("Confirm Lab Risk", type="primary"):
         "sp_art": int(sp_art),
     }
 
-    # DataFrame → enforce column order → numpy array (no feature-name checking)
     df_row = pd.DataFrame([row])[feature_order]
     X_input = df_row.values.astype(float)
 
-    # Scale and predict (21 features, exact match to scaler) [file:1]
-    # Use model's feature names if available, otherwise use saved feature_order
     if hasattr(modelA, 'feature_names_in_'):
         expected = list(modelA.feature_names_in_)
     else:
@@ -134,13 +121,9 @@ if st.button("Confirm Lab Risk", type="primary"):
 
     df_row = df_row.reindex(columns=expected, fill_value=0)
 
-    # Transform and predict (pass DataFrame with correct column names to avoid scaler warnings)
     X_scaled = scalerA.transform(df_row)
     prob = modelA.predict_proba(X_scaled)[0][1]
 
-    # -----------------------------------------------------------------
-    # Display results
-    # -----------------------------------------------------------------
     colL, colR = st.columns(2)
     with colL:
         st.metric("Lab-Confirmed Risk", f"{prob:.1%}")

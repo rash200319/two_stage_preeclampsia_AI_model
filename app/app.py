@@ -2,16 +2,14 @@ import streamlit as st
 import pandas as pd
 import joblib
 import numpy as np
-
+import os
 # --- 1. SETUP & CONFIGURATION ---
 st.set_page_config(page_title="Clinical Dashboard", layout="wide")
 
-# Load the trained model with robust path searching
-import os
+
 
 @st.cache_resource
 def load_model():
-    # Search several plausible roots so app works whether launched from project root or app/ folder
     here = os.path.abspath(os.path.dirname(__file__))  # app/
     project_root = os.path.abspath(os.path.join(here, '..'))
     cwd = os.path.abspath(os.getcwd())
@@ -20,7 +18,6 @@ def load_model():
     candidates = []
     for r in candidate_roots:
         candidates.append(os.path.join(r, 'biofusion_model_v1.pkl'))
-    # make unique preserving order
     seen = set()
     unique_candidates = []
     for p in candidates:
@@ -42,7 +39,7 @@ except FileNotFoundError as e:
     st.info("Place 'biofusion_model_v1.pkl' in the project root or a 'models/' directory, or update the path in this file.")
     st.stop()
 
-# --- 2. SIDEBAR: PATIENT VITALS ---
+
 st.sidebar.header("Patient Vitals Input")
 
 def user_input_features():
@@ -115,11 +112,8 @@ with col1:
     
     if st.button(' Assess Patient Risk'):
         try:
-            # === 🪄 THE MAGIC FIX: UNIVERSAL ADAPTER ===
-            # This block forces the input to match the model's training data exactly.
             
             # 1. Get the list of columns the model expects
-            # (scikit-learn stores this in feature_names_in_)
             if hasattr(model, 'feature_names_in_'):
                 expected_cols = model.feature_names_in_
             else:
@@ -127,10 +121,7 @@ with col1:
                 expected_cols = model.steps[0][1].feature_names_in_
             
             # 2. Reorder the dataframe to match the model (fill missing with 0)
-            # This fixes "Order Mismatch" AND "Missing Columns" automatically.
             final_df = input_df.reindex(columns=expected_cols, fill_value=0)
-            
-            # ===========================================
 
             # Get Probability
             probability = model.predict_proba(final_df)[0][1]

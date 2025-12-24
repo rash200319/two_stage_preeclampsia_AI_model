@@ -11,8 +11,7 @@ from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.pipeline import Pipeline
 from sklearn.neural_network import MLPClassifier
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import (classification_report, confusion_matrix, roc_auc_score, 
-                             precision_recall_curve, auc, recall_score)
+from sklearn.metrics import (classification_report, confusion_matrix, roc_auc_score,precision_recall_curve, auc, recall_score)
 
 import warnings
 warnings.filterwarnings("ignore")
@@ -23,7 +22,6 @@ sns.set_theme(style="whitegrid")
 
 print("✅ Libraries Loaded. Starting Pipeline...")
 
-# ==============================================================================
 # Load Dataset
 df = pd.read_csv("Dataset - Updated.csv")
 
@@ -135,9 +133,8 @@ plt.title("Feature Importance: What Drives Preeclampsia Risk?", fontsize=14)
 plt.tight_layout()
 plt.show()
 
-# ==============================================================================
+
 # 7. CLINICAL DEPLOYMENT SIMULATION
-# ==============================================================================
 print("\n--- CLINICAL RISK STRATIFICATION (Sample Patients) ---")
 results = X_test.copy()
 results['Probability'] = y_probs
