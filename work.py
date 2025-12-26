@@ -10,7 +10,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import StandardScaler, LabelEncoder
 from sklearn.metrics import classification_report, confusion_matrix, roc_auc_score
 from sklearn.cluster import KMeans
-from sklearn.impute import SimpleImputer # <--- Crucial fix for NaN errors
+from sklearn.impute import SimpleImputer 
 
 # 1. LOAD AND PREPARE DATA
 # ---------------------------------------------------------
@@ -21,17 +21,28 @@ except FileNotFoundError:
     print("Error: 'preeclampsia.csv' not found. Please check the file path.")
     exit()
 
+#the dataset columns are wrong so we switch those up
+df = df.rename(columns={'sysbp': 'diabp', 'diabp': 'sysbp'})
+
+#standardize columns 
+df.columns = df.columns.str.strip().str.lower().str.replace(":", "", regex=False)
+
 # Assign column names based on dataset structure
-columns = ['age', 'gest_age', 'height', 'weight', 'bmi', 'sysbp', 'diabp', 'hb', 
-           'pcv', 'tsh', 'platelet', 'creatinine', 'plgfsflt', 'SEng', 'cysC', 
+expected_columns = ['age', 'gest_age', 'height', 'weight', 'bmi', 'sysbp', 'diabp', 'hb', 
+           'pcv', 'tsh', 'platelet', 'creatinine', 'plgfsflt', 'seng', 'cysc', 
            'pp_13', 'glycerides', 'htn', 'diabetes', 'fam_htn', 'sp_art', 
            'occupation', 'diet', 'activity', 'sleep']
-df.columns = columns
+
+#check if any columns are missing( error handling)
+missing = set(expected_columns) - set(df.columns)
+if missing:
+    raise ValueError(f" Missing required columns: {missing}")
+df= df[expected_columns]
 
 # Convert all columns to numeric (handle any parsing issues)
 numeric_columns = ['age', 'gest_age', 'height', 'weight', 'bmi', 'sysbp', 'diabp', 
                    'hb', 'pcv', 'tsh', 'platelet', 'creatinine', 'plgfsflt', 
-                   'SEng', 'cysC', 'pp_13', 'glycerides']
+                   'seng', 'cysc', 'pp_13', 'glycerides']
 df[numeric_columns] = df[numeric_columns].apply(pd.to_numeric, errors='coerce')
 
 # Handle binary columns safely
