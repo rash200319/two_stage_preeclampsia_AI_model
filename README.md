@@ -1,11 +1,11 @@
-# 🧠 Preeclampsia Risk Assessment System  
+# Preeclampsia Risk Assessment System  
 ### Dual-Model, Clinically Guided Machine Learning Framework
 
 This repository presents a **two-layer machine learning system** for preeclampsia risk assessment, combining **unsupervised phenotyping for clinicians** and **supervised early risk screening for patients**. The system is designed to align with medical knowledge, clinical workflows, and real-world deployment constraints.
 
 ---
 
-## 📌 Project Overview
+## Project Overview
 
 Preeclampsia is a complex, multi-system hypertensive disorder of pregnancy. Rather than relying on a single predictive model, this project adopts a **dual-dashboard approach**:
 
@@ -18,7 +18,7 @@ Together, these models support **early detection, clinical interpretation, and r
 
 ---
 
-## 🧩 System Architecture
+## System Architecture
 Patient Inputs ──▶ Model A (Supervised NN) ──▶ Risk Score + Action Plan
 │
 ▼
@@ -27,7 +27,7 @@ Clinician Inputs ─▶ Model B (Clustering + RF) ─▶ Phenotype-Driven Risk S
 
 ---
 
-## 📂 Dataset Description
+## Dataset Description
 
 ### Core Columns
 
@@ -49,7 +49,7 @@ Clinician Inputs ─▶ Model B (Clustering + RF) ─▶ Phenotype-Driven Risk S
 
 ---
 
-## 🧠 Model A – BioFusion-NN (Patient Dashboard)
+## Model A – BioFusion-NN (Patient Dashboard)
 
 ### Objective
 Early **high-sensitivity screening** of preeclampsia risk using readily available clinical and contextual features.
@@ -91,7 +91,7 @@ Early **high-sensitivity screening** of preeclampsia risk using readily availabl
 
 ---
 
-## 🧠 Model B – PE-PhenoRisk (Doctor Dashboard)
+##  Model B – PE-PhenoRisk (Doctor Dashboard)
 
 ### Objective
 Discover **latent clinical phenotypes** of preeclampsia and enable **rapid phenotype-based risk prediction**.
@@ -130,7 +130,7 @@ Discover **latent clinical phenotypes** of preeclampsia and enable **rapid pheno
 
 ---
 
-## 📊 Model Evaluation Summary
+## Model Evaluation Summary
 
 | Model | Primary Goal | Key Metric | Performance |
 |-----|-------------|-----------|-------------|
@@ -139,7 +139,7 @@ Discover **latent clinical phenotypes** of preeclampsia and enable **rapid pheno
 
 ---
 
-## 🖥️ Dashboards
+##  Dashboards
 
 ### Patient Dashboard
 - Simple input form
@@ -154,20 +154,20 @@ Discover **latent clinical phenotypes** of preeclampsia and enable **rapid pheno
 
 ---
 
-## ⚠️ Clinical Disclaimer
+##  Clinical Disclaimer
 
 This project is intended for **research and educational purposes only**.  
 It is **not a diagnostic tool** and should not replace professional medical judgment.
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Install Dependencies
 ```bash
 pip install -r requirements.txt
 ```
-### 🏆 Key Contributions
+###  Key Contributions
 
 - Dual-model clinical ML architecture
 
@@ -179,10 +179,10 @@ pip install -r requirements.txt
 
 - Deployment-ready pipeline
 
-### 👩‍⚕️ Author
+###  Author
 
-Rashmi Paboda
-Computer Science & Engineering
-Maternal Health AI Research Project
+Rashmi Paboda <br>
+Computer Science & Engineering <br>
+Maternal Health AI Research Project <br>
 
-### ⭐ If you find this project useful, consider starring the repository!
+### If you find this project useful, consider starring the repository!
