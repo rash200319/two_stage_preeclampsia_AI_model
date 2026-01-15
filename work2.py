@@ -20,7 +20,7 @@ warnings.filterwarnings("ignore")
 np.random.seed(42)
 sns.set_theme(style="whitegrid")
 
-print("✅ Libraries Loaded. Starting Pipeline...")
+print(" Libraries Loaded. Starting Pipeline...")
 
 # Load Dataset
 df = pd.read_csv("data/Dataset - Updated.csv")
@@ -34,7 +34,7 @@ df['preeclampsia'] = df['Risk Level'].apply(lambda x: 1 if str(x).lower() == 'hi
 # MAP is a superior indicator of perfusion pressure than Systolic BP alone.
 df['MAP'] = (df['Systolic BP'] + 2 * df['Diastolic']) / 3
 
-print("⚙️ Generating Synthetic Environmental Features...")
+print(" Generating Synthetic Environmental Features...")
 df['Heat_Exposure'] = np.random.choice(['Low', 'Medium', 'High'], size=len(df), p=[0.25, 0.35, 0.40])
 df['Air_Pollution'] = np.random.choice(['Low', 'Medium', 'High'], size=len(df), p=[0.30, 0.40, 0.30])
 df['Access_To_Care'] = np.random.choice(['Poor', 'Moderate', 'Good'], size=len(df), p=[0.45, 0.35, 0.20])
@@ -56,7 +56,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, stratif
 
 print(f"Dataset Split: {X_train.shape[0]} Training Samples, {X_test.shape[0]} Test Samples")
 
-print("\n🚀 Starting Hyperparameter Optimization (Grid Search)...")
+print("\n Starting Hyperparameter Optimization (Grid Search)...")
 
 pipeline = Pipeline([
     ('scaler', StandardScaler()),  # Step 1: Z-Score Normalization
@@ -84,7 +84,7 @@ grid_search = GridSearchCV(
 grid_search.fit(X_train, y_train)
 best_model = grid_search.best_estimator_
 
-print("\n✅ Optimization Complete.")
+print("\n Optimization Complete.")
 print(f"Best Architecture: {grid_search.best_params_}")
 print(f"Best CV Recall Score: {grid_search.best_score_:.2%}")
 
@@ -111,7 +111,7 @@ plt.legend()
 plt.grid(True, alpha=0.3)
 plt.show()
 
-print("\n🔍 Generating Explainability Report (SHAP)...")
+print("\n Generating Explainability Report (SHAP)...")
 
 # Train Surrogate
 rf_surrogate = RandomForestClassifier(n_estimators=100, random_state=42)
@@ -149,4 +149,4 @@ results['Action_Plan'] = results['Probability'].apply(get_clinical_action)
 # Show high risk cases first
 print(results[['Systolic BP', 'MAP', 'Probability', 'Action_Plan']].sort_values(by='Probability', ascending=False).head(5))
 
-print("\n🏆 Pipeline Execution Successful. Ready for Submission.")
+print("\n Pipeline Execution Successful. Ready for Submission.")
