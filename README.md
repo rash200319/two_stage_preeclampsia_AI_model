@@ -3,7 +3,7 @@
 # Preeclampsia Risk Assessment System  
 ### Dual-Model, Clinically Guided Machine Learning Framework
 
-This repository presents a **two-layer machine learning system** for preeclampsia risk assessment, combining **unsupervised phenotyping for clinicians** and **supervised early risk screening for patients**. The system is designed to align with medical knowledge, clinical workflows, and real-world deployment constraints.
+This repository features a **dual-layer ML architecture** for preeclampsia assessment. It utilizes **unsupervised learning to provide clinicians with phenotype insights**, while a **supervised layer offers patients early-stage risk screening—all** while adhering to strict clinical standards and deployment requirements.
 
 ---
 
