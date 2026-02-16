@@ -181,6 +181,27 @@ pip install -r requirements.txt
 
 - Deployment-ready pipeline
 
+## Contributions
+
+Rashmi Paboda
+  - Project concept and system design
+  - Dual-model architecture design
+  - Development of Model A (BioFusion-NN)
+  - Development of Model B (PE-PhenoRisk)
+  - Dataset selection and preprocessing
+  - Feature engineering and evaluation
+  - Explainability pipeline (SHAP, surrogate modeling)
+  - assisted Full project documentation
+  - Dashboard logic and deployment preparation
+
+Easha Sameekshika 
+  - Team Leader 
+  - Prepared Full project documentation
+
+Danul Renuja 
+  - minor changes in model A
+  - assisted with model A documentation
+
 ###  Author
 
 Rashmi Paboda <br>
