@@ -16,7 +16,7 @@ def load_modelA():
     project_root = os.path.dirname(script_dir)                
     models_dir = os.path.join(project_root, "models")         
 
-    model_path = os.path.join(models_dir, "preeclampsia_model.pkl")
+    model_path = os.path.join(models_dir, "preeclampsia_phenotype_model.pkl")
     scaler_path = os.path.join(models_dir, "scaler.pkl")
 
 
@@ -109,20 +109,35 @@ if st.button("Confirm Lab Risk", type="primary"):
     df_row = pd.DataFrame([row])[feature_order]
     X_input = df_row.values.astype(float)
 
-    if hasattr(modelA, 'feature_names_in_'):
-        expected = list(modelA.feature_names_in_)
+    # The scaler and classifier were saved with different capitalization:
+    # the scaler expects SEng/cysC, while the classifier metadata contains
+    # seng/cysc. Use the scaler's feature names for preprocessing, then pass
+    # NumPy values to the classifier so sklearn does not compare incompatible
+    # DataFrame column names between the two artifacts.
+    if hasattr(scalerA, "feature_names_in_"):
+        scaler_features = list(scalerA.feature_names_in_)
     else:
-        expected = feature_order
+        scaler_features = feature_order
 
-    # Warn if we need to fill missing expected features
-    missing = [c for c in expected if c not in df_row.columns]
-    if missing:
-        st.warning(f"Filling missing features with zeros: {', '.join(missing)}")
+    df_for_scaler = df_row.reindex(
+        columns=scaler_features,
+        fill_value=0,
+    )
 
-    df_row = df_row.reindex(columns=expected, fill_value=0)
+    X_scaled = scalerA.transform(df_for_scaler)
 
-    X_scaled = scalerA.transform(df_row)
-    prob = modelA.predict_proba(X_scaled)[0][1]
+    # Preserve the classifier's training labels after scaling. The labels
+    # differ from the scaler only by capitalization (SEng/cysC vs seng/cysc).
+    if hasattr(modelA, "feature_names_in_"):
+        model_features = list(modelA.feature_names_in_)
+        X_for_model = pd.DataFrame(
+            np.asarray(X_scaled, dtype=float),
+            columns=model_features,
+        )
+    else:
+        X_for_model = np.asarray(X_scaled, dtype=float)
+
+    prob = modelA.predict_proba(X_for_model)[0][1]
 
     colL, colR = st.columns(2)
     with colL:
